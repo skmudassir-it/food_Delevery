@@ -6,26 +6,15 @@ const imagekit = new ImageKit({
     urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
 });
 
-async function uploadFile(buffer, fileName) {
-    try {
-        const response = await imagekit.upload({
-            file: buffer, // required
-            fileName: fileName, // required
-            folder: '/food-delivery' // optional
-        });
+async function uploadFile(file, fileName) {
+    const result = await imagekit.upload({
+        file: file, // required
+        fileName: fileName, // required
+    })
 
-        return {
-            url: response.url,
-            fileId: response.fileId,
-            name: response.name,
-            thumbnailUrl: response.thumbnailUrl
-        };
-    } catch (error) {
-        console.error("ImageKit Upload Error:", error);
-        throw new Error("Failed to upload file to storage.");
-    }
+    return result; // Return the URL of the uploaded file
 }
 
 module.exports = {
     uploadFile
-};
+}
