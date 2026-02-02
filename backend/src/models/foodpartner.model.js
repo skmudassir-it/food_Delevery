@@ -21,10 +21,6 @@ const foodPartnerSchema = new mongoose.Schema({
     address: {
         type: String,
         required: true
-    },
-    contactName: {
-        type: String,
-        required: true
     }
 }, {
     timestamps: true
