@@ -9,7 +9,11 @@ import Home from '../pages/general/Home';
 import Saved from '../pages/general/Saved';
 import BottomNav from '../components/BottomNav';
 import CreateFood from '../pages/food-partner/CreateFood';
-import Profile from '../pages/food-partner/Profile';
+import PartnerProfile from '../pages/food-partner/Profile';
+import GeneralProfile from '../pages/general/Profile';
+import AccountSettings from '../pages/general/AccountSettings';
+import Notifications from '../pages/general/Notifications';
+import PrivacyPolicy from '../pages/general/PrivacyPolicy';
 
 const AppRoutes = () => {
     return (
@@ -23,7 +27,11 @@ const AppRoutes = () => {
                 <Route path="/" element={<><Home /><BottomNav /></>} />
                 <Route path="/saved" element={<><Saved /><BottomNav /></>} />
                 <Route path="/create-food" element={<CreateFood />} />
-                <Route path="/food-partner/:id" element={<Profile />} />
+                <Route path="/food-partner/:id" element={<PartnerProfile />} />
+                <Route path="/profile" element={<><GeneralProfile /><BottomNav /></>} />
+                <Route path="/profile/account" element={<><AccountSettings /></>} />
+                <Route path="/profile/notifications" element={<><Notifications /></>} />
+                <Route path="/profile/privacy" element={<><PrivacyPolicy /></>} />
             </Routes>
         </Router>
     )

@@ -10,7 +10,7 @@ const Profile = () => {
 
     useEffect(() => {
         // Changed port to 4000 to match backend
-        axios.get(`http://localhost:4000/api/auth/foodpartner/${id}`, { withCredentials: true })
+        axios.get(`http://localhost:4000/api/food-partner/${id}`, { withCredentials: true })
             .then(response => {
                 setProfile(response.data.foodPartner)
                 setVideos(response.data.foodPartner.foodItems) // Assuming backend returns this structure

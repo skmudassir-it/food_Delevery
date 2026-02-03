@@ -90,7 +90,7 @@ function logoutUser(req, res) {
 
 async function registerFoodPartner(req, res) {
 
-    const { fullName, email, password, phone, address } = req.body;
+    const { name, email, password, phone, address } = req.body;
 
     const isAccountAlreadyExists = await foodPartnerModel.findOne({
         email
@@ -105,7 +105,7 @@ async function registerFoodPartner(req, res) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const foodPartner = await foodPartnerModel.create({
-        name: fullName,
+        name,
         email,
         password: hashedPassword,
         phone,
@@ -182,5 +182,44 @@ module.exports = {
     logoutUser,
     registerFoodPartner,
     loginFoodPartner,
-    logoutFoodPartner
+    logoutFoodPartner,
+    updateUser
+}
+
+async function updateUser(req, res) {
+    try {
+        const userId = req.user.id; // Assumes authMiddleware attaches user to req
+        const { fullName, password } = req.body;
+        let updateData = {};
+
+        if (fullName) updateData.fullName = fullName;
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+        if (req.file) {
+            // In a real app, you might upload to Cloudinary here. 
+            // For now, we serve from local filesystem or just store filename.
+            // Assuming static serve at /uploads
+            updateData.profilePic = `/uploads/${req.file.filename}`;
+        }
+
+        const updatedUser = await userModel.findByIdAndUpdate(
+            userId,
+            { $set: updateData },
+            { new: true, select: '-password' } // Return updated doc, exclude password
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({
+            message: "Profile updated successfully",
+            user: updatedUser
+        });
+
+    } catch (error) {
+        console.error("Update user error:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 }
